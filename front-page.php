@@ -1,6 +1,5 @@
 <?php get_header(); ?>
 
-
 <div class="page-banner">
   <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/library-hero.jpg');?>);"></div>
     <div class="page-banner__content container t-center c-white">
@@ -75,7 +74,7 @@
           wp_reset_postdata();
         ?>
         
-        <p class="t-center no-margin"><a href="#" class="btn btn--yellow">View All Blog Posts</a></p>
+        <p class="t-center no-margin"><a href="<?php echo site_url('/blog');?>" class="btn btn--yellow">View All Blog Posts</a></p>
       </div>
     </div>
   </div>
