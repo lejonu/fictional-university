@@ -35,6 +35,12 @@ function universityAdjustQueries( $query ) {
             'type' => 'numeric'
         ) );
     }
+
+    if( !is_admin() AND is_post_type_archive( 'program' ) AND $query->is_main_query()) {
+        $query->set( 'orderby', 'title' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'posts_per_page', -1 );
+    }
 }
 
 add_action( 'pre_get_posts', 'universityAdjustQueries' );
