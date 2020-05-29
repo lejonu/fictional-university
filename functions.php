@@ -19,6 +19,7 @@ function universityFeatures() {
 
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'post-thumbnails', array( 'post','professor' ) );
     add_image_size( 'professorLandscape', 400, 260, true );
     add_image_size( 'professorPortrait', 480, 650, true );
 }
