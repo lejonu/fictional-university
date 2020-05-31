@@ -6,9 +6,11 @@ class Search {
         this.openButton =  $( ".js-search-trigger" );
         this.closeButton =  $( ".search-overlay__close" );
         this.searchOverlay = $( ".search-overlay");
+        this.searchField = $( "#search-term" );
         this.init();
 
         this.isOpenOverlay = false;
+        this.typingTimer;
     }
 
     // 2. Events triggered on construnction
@@ -34,9 +36,24 @@ class Search {
                 this.closeSearchOverlay();
             } 
         });
+
+        this.searchField.on( "keydown", ( e ) => {
+            this.typingLogic( e );
+        });
     }
 
     // 3. Methods ( functions, actions...)
+
+    typingLogic( e ) {
+        // Reset timeout
+        clearTimeout( this.typingTimer );
+
+        this.typingTimer = setTimeout(( ) => {
+            console.log( e.target.value );
+        }, 2000);
+        
+    }
+
     openSearchOverlay() {
         this.searchOverlay.addClass( "search-overlay--active" );
 
