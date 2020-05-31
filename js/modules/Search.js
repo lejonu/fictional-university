@@ -3,6 +3,7 @@ import $ from 'jquery';
 class Search {
     // 1. Describe our object
     constructor() {
+        this.resultsDiv = $( "#search-overlay__results" );
         this.openButton =  $( ".js-search-trigger" );
         this.closeButton =  $( ".search-overlay__close" );
         this.searchOverlay = $( ".search-overlay");
@@ -10,6 +11,8 @@ class Search {
         this.init();
 
         this.isOpenOverlay = false;
+        this.isSpinnerVisible = false;
+        this.previousValue;
         this.typingTimer;
     }
 
@@ -25,10 +28,10 @@ class Search {
             this.closeSearchOverlay();
         });
 
-        $( document ).on("keyup", ( e ) => {
+        $( document ).on("keydown", ( e ) => {
             // console.log( e.keyCode );
 
-            if( e.keyCode === 83 && !this.isOpenOverlay ) {
+            if( e.keyCode === 83 && !this.isOpenOverlay && !$( "input, textarea" ).is( ':focus' )) {
                 this.openSearchOverlay();
             } 
 
@@ -37,21 +40,43 @@ class Search {
             } 
         });
 
-        this.searchField.on( "keydown", ( e ) => {
+        this.searchField.on( "keyup", ( e ) => {
             this.typingLogic( e );
         });
     }
 
     // 3. Methods ( functions, actions...)
-
     typingLogic( e ) {
-        // Reset timeout
-        clearTimeout( this.typingTimer );
+        if( this.previousValue != this.searchField.val() ){
+            // Reset timeout
+            clearTimeout( this.typingTimer );
 
-        this.typingTimer = setTimeout(( ) => {
-            console.log( e.target.value );
-        }, 2000);
-        
+            if( this.searchField.val() ) {
+                if( !this.isSpinnerVisible )
+                {
+                    this.resultsDiv.html( '<div class="spinner-loader"></div>' );
+                    this.isSpinnerVisible = true;
+                } 
+    
+                this.typingTimer = setTimeout(( ) => {
+                    // console.log( e.target.values );
+                    this.getResults( e );
+                }, 2000);
+            } else {
+                this.resultsDiv.html( '' );
+                this.isSpinnerVisible = false;
+            }
+
+
+        }
+
+        this.previousValue = this.searchField.val();
+    }
+
+    getResults( e ) {
+        this.resultsDiv.html( "Imagine Real results..." + e.target.value );
+
+        this.isSpinnerVisible = false;
     }
 
     openSearchOverlay() {
