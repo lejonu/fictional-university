@@ -80,9 +80,34 @@ class Search {
 
         // $.getJSON( url, fn );
 
-        $.getJSON( `https://localhost:3000/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, ( posts ) => {
+        $.getJSON( `https://localhost:3000/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, posts => {
             
-            alert( posts[ 0 ].title.rendered );
+            // alert( posts[ 0 ].title.rendered );
+
+            // posts.forEach(element => {
+            //     console.log( element.title.rendered );
+            // });
+
+            let htmlCode = `
+            <h2 class="search-overlay__section-title">General Information</h2>
+            <ul class="link-list min-list">
+
+            ${ posts.map( item => `
+                <li><a href="${ item.link }">${ item.title.rendered }</a>
+            `).join( '' )}
+
+            </ul>
+            `;
+
+            // let htmlCode = `
+            // <h2 class="search-overlay__section-title">General Information</h2>
+            // <ul >
+            // <li class="link-list min-list"><a href="${ posts[0].link }">${ posts[0].title.rendered }</a>
+            // </ul>
+            // `;
+
+            this.resultsDiv.html( htmlCode  );    
+
         });
     }
 
