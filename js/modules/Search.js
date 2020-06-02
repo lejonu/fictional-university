@@ -74,9 +74,16 @@ class Search {
     }
 
     getResults( e ) {
-        this.resultsDiv.html( "Imagine Real results..." + e.target.value );
+        // this.resultsDiv.html( "Imagine Real results..." + e.target.value );
 
-        this.isSpinnerVisible = false;
+        // this.isSpinnerVisible = false;
+
+        // $.getJSON( url, fn );
+
+        $.getJSON( `https://localhost:3000/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, ( posts ) => {
+            
+            alert( posts[ 0 ].title.rendered );
+        });
     }
 
     openSearchOverlay() {
