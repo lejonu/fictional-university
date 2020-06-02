@@ -61,54 +61,38 @@ class Search {
                 this.typingTimer = setTimeout(( ) => {
                     // console.log( e.target.values );
                     this.getResults( e );
-                }, 2000);
+                }, 750);
             } else {
                 this.resultsDiv.html( '' );
                 this.isSpinnerVisible = false;
             }
-
-
         }
 
         this.previousValue = this.searchField.val();
     }
 
     getResults( e ) {
-        // this.resultsDiv.html( "Imagine Real results..." + e.target.value );
-
-        // this.isSpinnerVisible = false;
-
-        // $.getJSON( url, fn );
-
-        $.getJSON( `https://localhost:3000/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, posts => {
+        $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, posts => {
             
-            // alert( posts[ 0 ].title.rendered );
-
-            // posts.forEach(element => {
-            //     console.log( element.title.rendered );
-            // });
-
             let htmlCode = `
             <h2 class="search-overlay__section-title">General Information</h2>
-            <ul class="link-list min-list">
+
+            ${ posts.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
 
             ${ posts.map( item => `
                 <li><a href="${ item.link }">${ item.title.rendered }</a>
             `).join( '' )}
 
-            </ul>
+            ${ posts.length ? '</ul>' : '' }
+            
             `;
-
-            // let htmlCode = `
-            // <h2 class="search-overlay__section-title">General Information</h2>
-            // <ul >
-            // <li class="link-list min-list"><a href="${ posts[0].link }">${ posts[0].title.rendered }</a>
-            // </ul>
-            // `;
 
             this.resultsDiv.html( htmlCode  );    
 
+            this.isSpinnerVisible = false;
         });
+
+        
     }
 
     openSearchOverlay() {

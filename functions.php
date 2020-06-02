@@ -42,6 +42,10 @@ function universityFiles() {
     wp_enqueue_style( 'custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
 
     wp_enqueue_style( 'universityMainStyles', get_stylesheet_uri(), NULL, microtime() );
+
+    wp_localize_script( 'main-unversity-js', 'universityData', array(
+        'root_url' => get_site_url()
+    ));
 }
 
 add_action( 'wp_enqueue_scripts', 'universityFiles' );
