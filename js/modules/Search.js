@@ -76,23 +76,28 @@ class Search {
     getResults( e ) {
 
         $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, posts => {
-            
-            let htmlCode = `
-            <h2 class="search-overlay__section-title">General Information</h2>
+            $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/pages?search=${ this.searchField.val() }`, pages => {
+               
+               let combinedResults = posts.concat( pages );
+               
+                let htmlCode = `
+                <h2 class="search-overlay__section-title">General Information</h2>
+    
+                ${ combinedResults.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
+    
+                ${ combinedResults.map( item => `
+                    <li><a href="${ item.link }">${ item.title.rendered }</a>
+                `).join( '' )}
+    
+                ${ combinedResults.length ? '</ul>' : '' }
+                
+                `;
+    
+                this.resultsDiv.html( htmlCode  );    
+    
+                this.isSpinnerVisible = false;
+            });
 
-            ${ posts.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
-
-            ${ posts.map( item => `
-                <li><a href="${ item.link }">${ item.title.rendered }</a>
-            `).join( '' )}
-
-            ${ posts.length ? '</ul>' : '' }
-            
-            `;
-
-            this.resultsDiv.html( htmlCode  );    
-
-            this.isSpinnerVisible = false;
 
         });       
     }
@@ -104,7 +109,7 @@ class Search {
         $( "body" ).addClass( "body-no-scroll" );
 
         this.searchField.val('');
-        
+
         setTimeout(() => {
             this.searchField.focus();
         }, 301);
