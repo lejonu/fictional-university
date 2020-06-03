@@ -62,7 +62,7 @@ class Search {
     
                 this.typingTimer = setTimeout(( ) => {
                     // console.log( e.target.values );
-                    this.getResults( e );
+                    this.getResults( );
                 }, 750);
             } else {
                 this.resultsDiv.html( '' );
@@ -73,33 +73,35 @@ class Search {
         this.previousValue = this.searchField.val();
     }
 
-    getResults( e ) {
+    getResults( ) {
 
-        $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/posts?search=${ this.searchField.val() }`, posts => {
-            $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/pages?search=${ this.searchField.val() }`, pages => {
+        $.when(
+            $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/posts?search=${ this.searchField.val() }` ), 
+            $.getJSON( `${ universityData.root_url }/wp-json/wp/v2/pages?search=${ this.searchField.val() }` )
+        ).then( ( posts, pages ) => {
+
+            // Results comes into an Array with information about getJSON
+            let combinedResults = posts[ 0 ].concat( pages[ 0 ] );
                
-               let combinedResults = posts.concat( pages );
-               
-                let htmlCode = `
-                <h2 class="search-overlay__section-title">General Information</h2>
-    
-                ${ combinedResults.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
-    
-                ${ combinedResults.map( item => `
-                    <li><a href="${ item.link }">${ item.title.rendered }</a>
-                `).join( '' )}
-    
-                ${ combinedResults.length ? '</ul>' : '' }
-                
-                `;
-    
-                this.resultsDiv.html( htmlCode  );    
-    
-                this.isSpinnerVisible = false;
-            });
+            let htmlCode = `
+            <h2 class="search-overlay__section-title">General Information</h2>
 
+            ${ combinedResults.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
 
-        });       
+            ${ combinedResults.map( item => `
+                <li><a href="${ item.link }">${ item.title.rendered }</a>
+            `).join( '' )}
+
+            ${ combinedResults.length ? '</ul>' : '' }
+
+            `;
+
+            this.resultsDiv.html( htmlCode  );    
+
+            this.isSpinnerVisible = false;
+        }, () => {
+            this.resultsDiv.html('<p>Unexpected error, please try again.</p>');
+        } );     
     }
 
     openSearchOverlay() {
