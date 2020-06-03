@@ -89,7 +89,7 @@ class Search {
             ${ combinedResults.length ? '<ul class="link-list min-list">' : '<p>No General Information found to: ' +  this.searchField.val() + '</p>' }
 
             ${ combinedResults.map( item => `
-                <li><a href="${ item.link }">${ item.title.rendered }</a>
+                <li><a href="${ item.link }">${ item.title.rendered }</a> ${ item.type === 'post' ? `by ${ item.authorName } ` : '' } </li>
             `).join( '' )}
 
             ${ combinedResults.length ? '</ul>' : '' }
