@@ -27,7 +27,9 @@
 
                 array_push( $results[ 'generalInfo' ], array(
                     'title' => get_the_title(),
-                    'permalink' => get_the_permalink()
+                    'permalink' => get_the_permalink(),
+                    'postType' => get_post_type(),
+                    'authorName' => get_the_author()
                 ));
             }
 
