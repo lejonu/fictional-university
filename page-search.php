@@ -65,6 +65,5 @@
 
 <?php
     }
-
     get_footer();
 ?>
