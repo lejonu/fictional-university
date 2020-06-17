@@ -88,14 +88,14 @@ class MyNotes {
                 console.log( 'congrats');
                 console.log( response );
             },
-            error: ()=>{
+            error: ( response )=>{
                 console.log( 'sorry');
                 console.log( response );
             }
         })
     }
     
-    createNote( ){
+    createNote(){
 
         let ourNewPost = {
             'title': $( ".new-note-title").val(),
@@ -129,7 +129,7 @@ class MyNotes {
                 console.log( 'congrats');
                 console.log( response );
             },
-            error: ()=>{
+            error: ( response )=>{
                 console.log( 'sorry');
                 console.log( response );
             }
