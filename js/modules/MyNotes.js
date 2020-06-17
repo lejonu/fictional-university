@@ -7,11 +7,10 @@ class MyNotes {
     }
 
     events() {
-        $( ".delete-note" ).on( "click", this.deleteNote);
-        $( ".edit-note" ).on( "click", this.editNote.bind( this ));
-        $( ".update-note" ).on( "click", this.updateNote.bind( this ));
+        $( "#my-notes" ).on( "click", ".delete-note", this.deleteNote);
+        $( "#my-notes" ).on( "click", ".edit-note", this.editNote.bind( this ));
+        $( "#my-notes" ).on( "click", ".update-note", this.updateNote.bind( this ));
         $( ".submit-note" ).on( "click", this.createNote.bind( this ));
-        
     }
 
     // Methods
@@ -113,7 +112,19 @@ class MyNotes {
             data: ourNewPost,
             success: ( response )=>{
                 $( ".new-note-title, .new-note-body" ).val( '' );
-                $( '<li>Imagine real data here</li>' ).prependTo( "#my-notes" ).hide().slideDown();
+                $( `
+                <li data-id="${ response.id }">
+                <input readonly class="note-title-field" value="${ response.title.raw }">
+
+                <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+
+                <span class="delete-note"><i class="fa fa-trash-0" aria-hidden="true"></i> Delete</span>
+
+                <textarea  readonly class="note-body-field">${ response.content.raw }</textarea>
+
+                <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i>Save</span>
+            </li>
+                ` ).prependTo( "#my-notes" ).hide().slideDown();
 
                 console.log( 'congrats');
                 console.log( response );
