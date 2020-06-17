@@ -12,7 +12,7 @@ function university_custom_rest() {
 
 add_action( 'rest_api_init', 'university_custom_rest' );
 
-function pageBanner( $args = NULL) {
+function pageBanner( $args = NULL ) {
     
     if( !$args['title'] ) {
         $args['title'] = get_the_title();
